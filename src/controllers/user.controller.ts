@@ -1,3 +1,4 @@
+import generateToken from "../helpers/generateToken";
 import User from "../models/user.model";
 import bcrypt from "bcryptjs"
 
@@ -16,7 +17,12 @@ const signupController = async(req, res) => {
         await newUser.save();
 
         if(newUser){
-            res.status(201).json({
+            const token = generateToken(newUser._id);
+            res.cookie("jwt", token, {
+                httpOnly: true,
+                maxAge: 15 * 24 * 60 * 60 * 1000,
+                sameSite:"strict",
+            }).status(201).json({
                 _id: newUser._id,
                 username: newUser.username
             })
