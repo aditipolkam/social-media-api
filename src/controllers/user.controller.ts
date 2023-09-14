@@ -39,4 +39,28 @@ const signupController = async(req, res) => {
     }
 }
 
-export {signupController}
+const loginController = async(req, res) => {
+    try{
+        const { username, password} = req.body;
+
+        const user = await User.findOne({username});
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+
+        if(!user || !isPasswordCorrect) return res.status(400).json({message:"Invalid username or password."});
+        const token  = generateToken(user._id);
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            maxAge: 15 * 24 * 60 * 60 * 1000,
+            sameSite:"strict",
+        }).status(201).json({
+            _id: user._id,
+            username: user.username
+        })
+    }
+    catch(error){
+        console.error("Error in signup user",error);
+        res.status(500).json({message: error.message})
+    }
+}
+
+export {signupController, loginController}
