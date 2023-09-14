@@ -58,9 +58,20 @@ const loginController = async(req, res) => {
         })
     }
     catch(error){
-        console.error("Error in signup user",error);
+        console.error("Error in login user",error);
         res.status(500).json({message: error.message})
     }
 }
 
-export {signupController, loginController}
+const logoutController = async(req, res) => {
+    try{
+        res.cookie("jwt","",{maxAge:1});
+        res.status(200).json({message:"User logged out successfully."});
+    }
+    catch(error){
+        console.error("Error in logout user",error);
+        res.status(500).json({message: error.message})
+    }
+}
+
+export { signupController, loginController, logoutController }
