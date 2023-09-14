@@ -74,4 +74,18 @@ const logoutController = async(req, res) => {
     }
 }
 
-export { signupController, loginController, logoutController }
+const followUnfollowUser = async(req, res) => {
+    try{
+        // const {id} = req.params;
+        // const userToModify = await User.findById(id);
+        // const currentUser = await User.findById();
+
+        res.status(200).json({message:"User logged out successfully."});
+    }
+    catch(error){
+        console.error("Error in follow/unfollow user",error);
+        res.status(500).json({message: error.message})
+    }
+}
+
+export { signupController, loginController, logoutController, followUnfollowUser }
