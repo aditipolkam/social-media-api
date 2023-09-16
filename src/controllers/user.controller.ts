@@ -104,22 +104,43 @@ const followUnfollowUser = async(req, res) => {
 }
 
 const updateUser = async(req, res)=> {
-    const { name, email, profilePic, bio } = req.body;
-    const userId = req.user._id;
+    try{
+        const { name, email, profilePic, bio } = req.body;
+        const userId = req.user._id;
     
-    const user = await User.findById(userId).select("-password");
-
-    if(!user) return res.status(400).json({message:"User not found."})
-
-    user.name = name || user.name;
-    user.email = email || user.email;
-    user.profilePic = profilePic || user.profilePic;
-    user.bio = bio || user.bio;
-
-    await user.save();
-
-    res.status(200).json({message:"User updated successfully.", user})
+        const user = await User.findById(userId).select("-password");
+    
+        if(!user) return res.status(400).json({message:"User not found."})
+    
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.profilePic = profilePic || user.profilePic;
+        user.bio = bio || user.bio;
+    
+        await user.save();
+    
+        res.status(200).json({message:"User updated successfully.", user})
+    }
+    catch(error){
+        console.error("Error while updating user.", error);
+        res.status(500).json({message: error.message})
+    }
 
 }
 
-export { signupController, loginController, logoutController, followUnfollowUser, updateUser }
+const getUser = async(req, res)=>{
+    try{
+        const {id} = req.params;
+
+        const user = await User.findById(id).select("-password");
+        if(!user) return res.status(400).json({message: "User not found."});
+    
+        res.status(200).json(user);
+    }
+    catch(error){
+        console.error("Error while getting user.", error);
+        res.status(500).json({message: error.message})
+    }
+}
+
+export { signupController, loginController, logoutController, followUnfollowUser, updateUser, getUser}
