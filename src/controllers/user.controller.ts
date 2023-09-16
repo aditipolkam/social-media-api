@@ -103,4 +103,23 @@ const followUnfollowUser = async(req, res) => {
     }
 }
 
-export { signupController, loginController, logoutController, followUnfollowUser }
+const updateUser = async(req, res)=> {
+    const { name, email, profilePic, bio } = req.body;
+    const userId = req.user._id;
+    
+    const user = await User.findById(userId).select("-password");
+
+    if(!user) return res.status(400).json({message:"User not found."})
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.profilePic = profilePic || user.profilePic;
+    user.bio = bio || user.bio;
+
+    await user.save();
+
+    res.status(200).json({message:"User updated successfully.", user})
+
+}
+
+export { signupController, loginController, logoutController, followUnfollowUser, updateUser }
