@@ -12,7 +12,7 @@ const createPost = async(req, res) => {
             return res.status(404).json({message:"User not found."})
         }
 
-        if(user._id.toString() !== res.user._id.toString()){
+        if(user._id.toString() !== req.user._id.toString()){
             return res.status(401).json({message: "You are unauthorized to perform this transaction."})
         }
 
@@ -20,7 +20,7 @@ const createPost = async(req, res) => {
         const result = await newPost.save();
         console.log(result);
 
-        res.status(201).json({message:"Created."})
+        res.status(201).json({message:"Created.", post: result})
     }
     catch(error){
         console.error(error);
