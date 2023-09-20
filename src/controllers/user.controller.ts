@@ -1,6 +1,8 @@
 import generateToken from "../helpers/generateToken";
 import User from "../models/user.model";
 import bcrypt from "bcryptjs"
+import sendEmail from "../services/email.service";
+import { welcomeEmail } from "../utils/constants";
 
 const signupController = async(req, res) => {
     try{
@@ -18,6 +20,7 @@ const signupController = async(req, res) => {
 
         if(newUser){
             const token = generateToken(newUser._id);
+            sendEmail(newUser.email,welcomeEmail.subject, welcomeEmail.htmlBody, welcomeEmail.textBody, welcomeEmail.messageStream);
             res.cookie("jwt", token, {
                 httpOnly: true,
                 maxAge: 15 * 24 * 60 * 60 * 1000,
