@@ -43,4 +43,23 @@ const getPost = async(req, res)=>{
     }
 }
 
-export {createPost, getPost}
+const deletePost = async(req, res)=>{
+    try{
+        const {id} = req.params;
+        if(!id) return res.status(400).json({message:"Id required"})
+
+        const post = await Post.findById(id);
+        if(!post) return res.status(404).json({message:"Post not found"})
+        if(req.user._id.toString() !== post.postedBy.toString()) return res.status(401).json({message:"Unauthorized to delete post."})
+
+        const result = await Post.findByIdAndDelete(id);
+        console.log(result);
+        res.status(200).json({message: "Deleted."})
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({message: "Internal server error."})
+    }
+}
+
+export {createPost, getPost, deletePost}
