@@ -6,7 +6,7 @@ import { jwtSecret } from '../utils/constants';
 
 const protectRoute = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.header('Authorization');
+    const token = req.cookies.jwt;
 
     if (!token) {
         return res.status(401).json({ message: 'Authorization token is missing.' });
