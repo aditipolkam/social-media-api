@@ -97,3 +97,34 @@ export const likeUnlikePost = async(req: CustomRequest, res:Response)=>{
         res.status(500).json({message: "Internal server error."})
     }
 }
+
+export const replyToPost = async(req: CustomRequest, res:Response)=>{
+    try{
+        //check if user exists
+        if(!req.userId) return res.status(401).json({message: "Unauthorized."})
+        const user = await User.findById(req.userId);
+        if(!user) return res.status(404).json({message: "User not found."})
+
+        //get id of the post to reply to
+        const {id} = req.params;
+        if(!id) return res.status(400).json({message:"Post Id required"})
+
+        const {text} = req.body;
+        if(!text) return res.status(400).json({message:"Text is required"})
+
+        //check if post exists
+        const post = await Post.findById(id);
+        if(!post) return res.status(404).json({message:"Post not found"})
+        
+        await Post.findByIdAndUpdate(id, {
+            $push: {replies: {userId: user._id, text:text}}
+        })
+       
+        res.status(200).json({message: "Reply added.", post:post})
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({message: "Internal server error."})
+    }
+}
+
