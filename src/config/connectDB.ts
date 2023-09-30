@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { mongoUri } from "../utils/constants";
 
 const connectDB = async () => {
     try{
-        mongoose.connect(process.env.MONGO_URI, {
+        mongoose.connect(mongoUri, {
             retryWrites:true, 
             w:"majority"
         })       

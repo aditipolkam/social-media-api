@@ -1,7 +1,9 @@
+import { Request, Response } from "express";
 import Post from "../models/post.model";
-import User from "../models/user.model";
+import {User} from "../models/user.model";
+import { AuthenticatedRequest } from "../interfaces/express.generic";
 
-const createPost = async(req, res) => {
+const createPost = async(req: AuthenticatedRequest, res:Response) => {
     try{
         const {postedBy, text, img} = req.body;
 
@@ -29,7 +31,7 @@ const createPost = async(req, res) => {
 }
 
 
-const getPost = async(req, res)=>{
+const getPost = async(req: AuthenticatedRequest, res:Response)=>{
     try{
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
@@ -43,7 +45,7 @@ const getPost = async(req, res)=>{
     }
 }
 
-const deletePost = async(req, res)=>{
+const deletePost = async(req: AuthenticatedRequest, res:Response)=>{
     try{
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
@@ -62,4 +64,23 @@ const deletePost = async(req, res)=>{
     }
 }
 
-export {createPost, getPost, deletePost}
+const likePost = async(req: Request, res:Response)=>{
+    try{
+        const {id} = req.params;
+        if(!id) return res.status(400).json({message:"Id required"})
+
+        const post = await Post.findById(id);
+        if(!post) return res.status(404).json({message:"Post not found"})
+        
+        // const isLiked = post.likes.includes(id);
+        // const result = await Post.findByIdAndDelete(id);
+        // console.log(result);
+        // res.status(200).json({message: "Deleted."})
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({message: "Internal server error."})
+    }
+}
+
+export {createPost, getPost, deletePost, likePost}

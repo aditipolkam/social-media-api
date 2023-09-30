@@ -1,6 +1,7 @@
 import express from "express";
 import { signupController, loginController, logoutController, followUnfollowUser, updateUser, getUser } from "../controllers/user.controller";
 import protectRoute from "../middleware/protector.middleware";
+import { AuthenticatedRequest } from "../interfaces/express.generic";
 
 const router = express.Router();
 
