@@ -14,8 +14,8 @@ const PostSchema = new Schema({
         type: String
     },
     likes:{
-        type: Number,
-        default:0
+        type: [String],
+        default:[]
     },
     replies:[
         {
@@ -28,12 +28,6 @@ const PostSchema = new Schema({
                 type: String,
                 required: true
             },
-            userProfilePic: {
-                type: String
-            },
-            username:{
-                type: String
-            }
         }
     ]
 },{

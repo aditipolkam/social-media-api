@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import Post from "../models/post.model";
 import User from "../models/user.model";
 import { CustomRequest } from "../interfaces/express.generic";
@@ -66,18 +66,31 @@ export const deletePost = async(req: CustomRequest, res:Response)=>{
     }
 }
 
-export const likePost = async(req: Request, res:Response)=>{
+export const likeUnlikePost = async(req: CustomRequest, res:Response)=>{
     try{
+        //check if user exists
+        if(!req.userId) return res.status(401).json({message: "Unauthorized."})
+        const user = await User.findById(req.userId);
+        if(!user) return res.status(404).json({message: "User not found."})
+
+        //get params
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
 
+        //check if post exists
         const post = await Post.findById(id);
         if(!post) return res.status(404).json({message:"Post not found"})
         
-        // const isLiked = post.likes.includes(id);
-        // const result = await Post.findByIdAndDelete(id);
-        // console.log(result);
-        // res.status(200).json({message: "Deleted."})
+        //like or unlike post
+        if(post.likes.includes(req.userId))
+            await Post.findByIdAndUpdate(id, {
+                $pull: { likes: user._id },
+            });
+        else
+        await Post.findByIdAndUpdate(id, {
+            $push: { likes: user._id },
+        });
+        res.status(200).json({message: "Like/unlike done."})
     }
     catch(error){
         console.error(error);
