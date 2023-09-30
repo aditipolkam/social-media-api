@@ -116,7 +116,8 @@ const logoutController = async (req:Request, res:Response) => {
 const followUnfollowUser = async (req:CustomRequest, res:Response) => {
   try {
     const { id } = req.params;
-    const currentUser = await User.findById(req.user._id);
+    if(!req.userId) return res.status(401).json({message: "User not found."})
+    const currentUser = await User.findById(req.userId);
 
     if(!currentUser) return res.status(404).json({message:"User not found."})
 
@@ -152,7 +153,8 @@ const followUnfollowUser = async (req:CustomRequest, res:Response) => {
 const updateUser = async (req:CustomRequest, res: Response) => {
   try {
     const { name, email, profilePic, bio } = req.body;
-    const userId = req.user._id;
+    if(!req.userId) return res.status(401).json({message: "User not found."})
+    const userId = req.userId;
 
     const user = await User.findById(userId).select("-password");
 

@@ -5,20 +5,19 @@ import { CustomRequest } from "../interfaces/express.generic";
 
 const createPost = async(req: CustomRequest, res:Response) => {
     try{
-        const {postedBy, text, img} = req.body;
+        const {text, img} = req.body;
 
-        if(!postedBy || !text) return res.status(400).json({message: "PostedBy and text field should be present."});
+        if(!text) return res.status(400).json({message: "Text field should be present."});
 
-        const user = await User.findById(postedBy);
+        const user = await User.findById(req.userId);
+
         if(!user){
             return res.status(404).json({message:"User not found."})
         }
 
-        if(user._id.toString() !== req.user._id.toString()){
-            return res.status(401).json({message: "You are unauthorized to perform this transaction."})
-        }
+        const postedBy = req.userId;
 
-        const newPost = new Post({postedBy, text, img})
+        const newPost = new Post({postedBy,text, img})
         const result = await newPost.save();
         console.log(result);
 
@@ -47,12 +46,15 @@ const getPost = async(req: CustomRequest, res:Response)=>{
 
 const deletePost = async(req: CustomRequest, res:Response)=>{
     try{
+  
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
 
         const post = await Post.findById(id);
         if(!post) return res.status(404).json({message:"Post not found"})
-        if(req.user._id.toString() !== post.postedBy.toString()) return res.status(401).json({message:"Unauthorized to delete post."})
+
+        if(!req.userId) return res.status(401).json({message: "User not found."})
+        if(req.userId.toString() !== post.postedBy.toString()) return res.status(403).json({message:"Unauthorized to delete post."})
 
         const result = await Post.findByIdAndDelete(id);
         console.log(result);
