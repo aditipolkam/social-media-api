@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Post from "../models/post.model";
-import {User} from "../models/user.model";
-import { AuthenticatedRequest } from "../interfaces/express.generic";
+import User from "../models/user.model";
+import { CustomRequest } from "../interfaces/express.generic";
 
-const createPost = async(req: AuthenticatedRequest, res:Response) => {
+const createPost = async(req: CustomRequest, res:Response) => {
     try{
         const {postedBy, text, img} = req.body;
 
@@ -31,7 +31,7 @@ const createPost = async(req: AuthenticatedRequest, res:Response) => {
 }
 
 
-const getPost = async(req: AuthenticatedRequest, res:Response)=>{
+const getPost = async(req: CustomRequest, res:Response)=>{
     try{
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
@@ -45,7 +45,7 @@ const getPost = async(req: AuthenticatedRequest, res:Response)=>{
     }
 }
 
-const deletePost = async(req: AuthenticatedRequest, res:Response)=>{
+const deletePost = async(req: CustomRequest, res:Response)=>{
     try{
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})

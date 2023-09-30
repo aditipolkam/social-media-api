@@ -1,10 +1,10 @@
 import generateToken from "../helpers/generateToken";
-import {User} from "../models/user.model";
+import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 import sendEmail from "../services/email.service";
 import { welcomeEmail } from "../utils/constants";
 import { Request, Response } from "express";
-import { AuthenticatedRequest } from "../interfaces/express.generic";
+import { CustomRequest } from "../interfaces/express.generic";
 
 const signupController = async (
   req: Request<
@@ -113,7 +113,7 @@ const logoutController = async (req:Request, res:Response) => {
   }
 };
 
-const followUnfollowUser = async (req:AuthenticatedRequest, res:Response) => {
+const followUnfollowUser = async (req:CustomRequest, res:Response) => {
   try {
     const { id } = req.params;
     const currentUser = await User.findById(req.user._id);
@@ -149,7 +149,7 @@ const followUnfollowUser = async (req:AuthenticatedRequest, res:Response) => {
   }
 };
 
-const updateUser = async (req:AuthenticatedRequest, res: Response) => {
+const updateUser = async (req:CustomRequest, res: Response) => {
   try {
     const { name, email, profilePic, bio } = req.body;
     const userId = req.user._id;
@@ -173,7 +173,7 @@ const updateUser = async (req:AuthenticatedRequest, res: Response) => {
   }
 };
 
-const getUser = async (req:AuthenticatedRequest, res:Response) => {
+const getUser = async (req:CustomRequest, res:Response) => {
   try {
     const { id } = req.params;
 

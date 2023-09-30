@@ -1,7 +1,9 @@
 import { Request } from "express";
-import { userType } from "../models/user.model";
-import { Document } from "mongodb";
 
-export interface AuthenticatedRequest extends Request{
-    user: Omit<userType, "password"> & Document
+export interface CustomRequest extends Request{
+    userId?: string; 
+}
+
+export interface JwtPayload{
+    userId: string
 }

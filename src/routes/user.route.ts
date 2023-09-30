@@ -1,13 +1,9 @@
 import express from "express";
 import { signupController, loginController, logoutController, followUnfollowUser, updateUser, getUser } from "../controllers/user.controller";
-import protectRoute from "../middleware/protector.middleware";
-import { AuthenticatedRequest } from "../interfaces/express.generic";
+import protectRoute from "../middleware/protectRoute";
 
 const router = express.Router();
 
-router.get('/',function(req, res){
-    res.send("Helloe")
-})
 
 router.post('/signup',signupController);
 router.post('/login',loginController);
