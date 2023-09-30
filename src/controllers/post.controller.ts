@@ -3,7 +3,7 @@ import Post from "../models/post.model";
 import User from "../models/user.model";
 import { CustomRequest } from "../interfaces/express.generic";
 
-const createPost = async(req: CustomRequest, res:Response) => {
+export const createPost = async(req: CustomRequest, res:Response) => {
     try{
         const {text, img} = req.body;
 
@@ -30,7 +30,7 @@ const createPost = async(req: CustomRequest, res:Response) => {
 }
 
 
-const getPost = async(req: CustomRequest, res:Response)=>{
+export const getPost = async(req: CustomRequest, res:Response)=>{
     try{
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
@@ -44,7 +44,7 @@ const getPost = async(req: CustomRequest, res:Response)=>{
     }
 }
 
-const deletePost = async(req: CustomRequest, res:Response)=>{
+export const deletePost = async(req: CustomRequest, res:Response)=>{
     try{
   
         const {id} = req.params;
@@ -66,7 +66,7 @@ const deletePost = async(req: CustomRequest, res:Response)=>{
     }
 }
 
-const likePost = async(req: Request, res:Response)=>{
+export const likePost = async(req: Request, res:Response)=>{
     try{
         const {id} = req.params;
         if(!id) return res.status(400).json({message:"Id required"})
@@ -84,5 +84,3 @@ const likePost = async(req: Request, res:Response)=>{
         res.status(500).json({message: "Internal server error."})
     }
 }
-
-export {createPost, getPost, deletePost, likePost}
