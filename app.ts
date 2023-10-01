@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from './src/config/connectDB';
 import userRoutes from "./src/routes/user.route"
 import postRouter from "./src/routes/post.route"
+import timelineRoutes from "./src/routes/timeline.route"
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,7 @@ app.use(cookieParser())
 
 app.use('/api/users', userRoutes)
 app.use('/api/post', postRouter)
+app.use('/api/timeline',timelineRoutes)
 
 
 app.listen(port, () => {
