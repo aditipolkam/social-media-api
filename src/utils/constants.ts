@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+export const port = process.env.PORT || 3000;
 export const postmarkApiKey = process.env.POSTMARK_APIKEY as string;
 export const sender = "aditi@thesocialcontinent.com"
 export const mongoUri = process.env.MONGO_URI as string;
