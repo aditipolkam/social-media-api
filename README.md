@@ -26,7 +26,7 @@ To get started with this project, follow these steps:
 2. Navigate to the project directory:
 
    ```bash
-   cd your-project
+   cd social-media-api
    ```
 
 3. Install project dependencies using npm:
