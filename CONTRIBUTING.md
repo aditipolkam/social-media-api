@@ -52,7 +52,7 @@ If you'd like to contribute code to the project, please follow these steps:
    git push origin feature-name
    ```
 
-7. **Open a Pull Request**: Go to the [Pull Requests](https://github.com/yourusername/your-project/pulls) tab of your fork on GitHub and click the "New Pull Request" button. Describe your changes in the pull request, and we will review your contribution.
+7. **Open a Pull Request**: Go to the [Pull Requests](https://github.com/aditipolkam/social-media-api/pulls) tab of your fork on GitHub and click the "New Pull Request" button. Describe your changes in the pull request, and we will review your contribution.
 
 ## Code Style
 
